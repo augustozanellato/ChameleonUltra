@@ -39,25 +39,34 @@ set -xe
     --bootloader  bootloader.hex   --bootloader-version  $bootloader_version  --key-file ../../resource/dfu_key/chameleon.pem \
     --application application.hex  --application-version $application_version --app-boot-validation NO_VALIDATION \
     --softdevice  ../nrf52_sdk/components/softdevice/${softdevice}/hex/${softdevice}_nrf52_${softdevice_version}_softdevice.hex --sd-req ${softdevice_id} --sd-id ${softdevice_id} --sd-boot-validation NO_VALIDATION \
-    dfu-full.zip
+    ${device_type}-dfu-full.zip
 	
   nrfutil nrf5sdk-tools pkg generate \
     --hw-version $hw_version --key-file ../../resource/dfu_key/chameleon.pem \
     --application application.hex  --application-version $application_version --app-boot-validation NO_VALIDATION \
     --sd-req ${softdevice_id} \
-    dfu-app.zip
+    ${device_type}-dfu-app.zip
 
   nrfutil nrf5sdk-tools settings generate \
     --family NRF52840 \
     --application application.hex --application-version $application_version \
     --bootloader-version $bootloader_version --bl-settings-version 2 \
     settings.hex
+  mergehex \
+    --merge \
+    settings.hex \
+    application.hex \
+    --output application.hex
+  rm settings.hex
+
+  cp ../nrf52_sdk/components/softdevice/${softdevice}/hex/${softdevice}_nrf52_${softdevice_version}_softdevice.hex softdevice.hex
 
   mergehex \
     --merge \
       bootloader.hex \
-      settings.hex \
       application.hex \
-      ../nrf52_sdk/components/softdevice/${softdevice}/hex/${softdevice}_nrf52_${softdevice_version}_softdevice.hex \
+      softdevice.hex \
     --output fullimage.hex
+
+  zip ${device_type}-binaries.zip *.hex
 )

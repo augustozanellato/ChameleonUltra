@@ -1,0 +1,6 @@
+on:
+  pull_request_target:
+
+jobs:
+  firmware_pipeline:
+    uses: ./.github/workflows/build_firmware.yml

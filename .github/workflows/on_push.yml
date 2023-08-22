@@ -1,0 +1,37 @@
+on:
+  push:
+
+jobs:
+  firmware_pipeline:
+    uses: ./.github/workflows/build_firmware.yml
+  create_release:
+    permissions:
+      contents: write
+    name: Create Pre-Release with dfu app images
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - firmware_pipeline
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Download Ultra DFU
+        uses: actions/download-artifact@v3
+        with:
+          name: release-artifacts
+          path: release-artifacts
+      - name: Upload to dev release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: |
+            Auto-Generated DFU packages from latest `main` commit.
+            For development purposes only. 
+            These are not tested, here be dragons.
+            Built from commit ${{ github.sha }}
+          tag_name: dev
+          name: Development release
+          draft: false
+          prerelease: true
+          target_commitish: ${{ github.sha }}
+          generate_release_notes: true
+          files: release-artifacts/*-dfu-app.zip
