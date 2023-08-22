@@ -40,8 +40,8 @@ jobs:
           prerelease: true
           target_commitish: ${{ github.sha }}
           generate_release_notes: true
-          files: release-artifacts/*-dfu-app.zip
-      - name: Fix up release tag
-        run: |
-          git tag -f dev
-          git push --tags -f
+          files: release-artifacts/*
+#      - name: Fix up release tag
+#        run: |
+#          git tag -f dev
+#          git push --tags -f
