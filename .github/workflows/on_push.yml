@@ -3,6 +3,9 @@ on:
 
 jobs:
   firmware_pipeline:
+    permissions:
+      packages: write
+      contents: read
     uses: ./.github/workflows/build_firmware.yml
   create_release:
     permissions:
