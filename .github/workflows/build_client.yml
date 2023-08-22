@@ -9,7 +9,7 @@ jobs:
     name: Build client
     strategy:
       matrix:
-        os: 
+        include: 
           - name: windows
             os: windows-latest
             shell: pwsh
@@ -31,24 +31,24 @@ jobs:
               true
             bundle_command: |
               (cd software && zip -r "$OLDPWD/client-macos.zip" .)
-    runs-on: ${{ matrix.os.os }}
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
         
       - name: Run OS specific setup
-        shell: ${{ matrix.os.shell }}
-        run: ${{ matrix.os.pre_command }}
+        shell: ${{ matrix.shell }}
+        run: ${{ matrix.pre_command }}
       - name: Upload built client
         uses: actions/upload-artifact@v3
         with:
-          name: client-${{ matrix.os.name }}
+          name: client-${{ matrix.name }}
           path: software/*
       - name: Zip up client for release
-        shell: ${{ matrix.os.shell }}
-        run: ${{ matrix.os.bundle_command }}
+        shell: ${{ matrix.shell }}
+        run: ${{ matrix.bundle_command }}
       - name: Upload release artifacts
         uses: actions/upload-artifact@v3
         with:
           name: release-artifacts
-          path: client-${{ matrix.os.name }}.zip
+          path: client-${{ matrix.name }}.zip
