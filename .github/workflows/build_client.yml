@@ -12,21 +12,18 @@ jobs:
         include: 
           - name: windows
             os: windows-latest
-            shell: pwsh
             pre_command: |
               ? .
             bundle_command: |
               Compress-Archive -Path software\* -DestinationPath client-windows.zip
           - name: linux
             os: ubuntu-latest
-            shell: bash
             pre_command: |
               true
             bundle_command: |
               (cd software && zip -r "$OLDPWD/client-linux.zip" .)
           - name: macos
             os: macos-latest
-            shell: bash
             pre_command: |
               true
             bundle_command: |
@@ -37,7 +34,6 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Run OS specific setup
-        shell: ${{ matrix.shell }}
         run: ${{ matrix.pre_command }}
       - name: Upload built client
         uses: actions/upload-artifact@v3
@@ -45,7 +41,6 @@ jobs:
           name: client-${{ matrix.name }}
           path: software/*
       - name: Zip up client for release
-        shell: ${{ matrix.shell }}
         run: ${{ matrix.bundle_command }}
       - name: Upload release artifacts
         uses: actions/upload-artifact@v3
