@@ -1,5 +1,4 @@
 name: PR handler
-
 on:
   pull_request_target:
 
@@ -25,7 +24,7 @@ jobs:
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: |
-            # Built artifacts for commmit ${{ github.sha }}
+            # Built artifacts for commit ${{ github.event.pull_request.head.sha }}
 
             ## Firmware
 
