@@ -3,6 +3,7 @@ on:
 
 jobs:
   firmware_pipeline:
+    name: Build Firmware
     permissions:
       packages: write
       contents: read
