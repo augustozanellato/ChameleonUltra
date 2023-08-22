@@ -1,3 +1,5 @@
+name: PR handler
+
 on:
   pull_request_target:
 
