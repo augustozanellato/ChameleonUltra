@@ -10,6 +10,9 @@ jobs:
       packages: write
       contents: read
     uses: ./.github/workflows/build_firmware.yml
+  client_pipeline:
+    name: Build Firmware
+    uses: ./.github/workflows/build_client.yml
   create_release:
     permissions:
       contents: write
@@ -18,6 +21,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs:
       - firmware_pipeline
+      - client_pipeline
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3

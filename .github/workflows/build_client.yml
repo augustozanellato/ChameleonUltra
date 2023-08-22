@@ -1,0 +1,54 @@
+# This is just a placeholder while I figure out the whole PyInstaller thing
+name: Client build
+
+on:
+  workflow_call:
+
+jobs:
+  build_client:
+    name: Build client
+    strategy:
+      matrix:
+        os: 
+          - name: windows
+            os: windows-latest
+            shell: pwsh
+            pre_command: |
+              ? .
+            bundle_command: |
+              Compress-Archive -Path software\* -DestinationPath client-windows.zip
+          - name: linux
+            os: ubuntu-latest
+            shell: bash
+            pre_command: |
+              true
+            bundle_command: |
+              (cd software && zip -r "$OLDPWD/client-linux.zip" .)
+          - name: macos
+            os: macos-latest
+            shell: bash
+            pre_command: |
+              true
+            bundle_command: |
+              (cd software && zip -r "$OLDPWD/client-macos.zip" .)
+    runs-on: ${{ matrix.os.os }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        
+      - name: Run OS specific setup
+        shell: ${{ matrix.os.shell }}
+        run: ${{ matrix.os.pre_command }}
+      - name: Upload built client
+        uses: actions/upload-artifact@v3
+        with:
+          name: client-${{ matrix.os.name }}
+          path: software/*
+      - name: Zip up client for release
+        shell: ${{ matrix.os.shell }}
+        run: ${{ matrix.os.bundle_command }}
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-artifacts
+          path: client-${{ matrix.os.name }}.zip
