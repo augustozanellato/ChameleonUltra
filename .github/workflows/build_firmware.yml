@@ -63,8 +63,8 @@ jobs:
           sudo chown -R $USER:$USER firmware/objects
           mkdir firmware/objects/${{ matrix.device_type }}-dfu-app
           mkdir firmware/objects/${{ matrix.device_type }}-dfu-full
-          unzip firmware/objects/${{ matrix.device_type }}-dfu-app.zip -d ${{ matrix.device_type }}-firmware/objects/dfu-app
-          unzip firmware/objects/${{ matrix.device_type }}-dfu-full.zip -d ${{ matrix.device_type }}-firmware/objects/dfu-full
+          unzip firmware/objects/${{ matrix.device_type }}-dfu-app.zip -d firmware/objects/${{ matrix.device_type }}-dfu-app
+          unzip firmware/objects/${{ matrix.device_type }}-dfu-full.zip -d firmware/objects/${{ matrix.device_type }}-dfu-full
       - name: Upload dfu app image
         uses: actions/upload-artifact@v3
         with:
