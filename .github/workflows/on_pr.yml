@@ -13,6 +13,8 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     name: Comment on PR
+    needs:
+      - firmware_pipeline
     permissions:
       pull-requests: write
     steps:
