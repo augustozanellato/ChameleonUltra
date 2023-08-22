@@ -9,9 +9,13 @@ jobs:
       packages: write
       contents: read
     uses: ./.github/workflows/build_firmware.yml
+    with:
+      checkout-sha: "${{ github.event.pull_request.merge_commit_sha }}"
   client_pipeline:
     name: Build Firmware
     uses: ./.github/workflows/build_client.yml
+    with:
+      checkout-sha: "${{ github.event.pull_request.merge_commit_sha }}"
   comment:
     runs-on: ubuntu-latest
     name: Comment on PR
