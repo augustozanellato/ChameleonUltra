@@ -25,7 +25,7 @@ jobs:
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: |
-            # Built artifacts for commmit ${{ github.head_ref }}
+            # Built artifacts for commmit ${{ github.sha }}
 
             ## Firmware
 

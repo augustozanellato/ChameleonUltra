@@ -1,9 +1,7 @@
-# This is just a placeholder while I figure out the whole PyInstaller thing
+# This is just a placeholder while the whole PyInstaller thing gets figured out
 name: Client build
-
 on:
   workflow_call:
-
 jobs:
   build_client:
     name: Build client
@@ -32,7 +30,6 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
-        
       - name: Run OS specific setup
         run: ${{ matrix.pre_command }}
       - name: Upload built client
