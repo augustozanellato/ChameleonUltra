@@ -44,4 +44,4 @@ jobs:
       - name: Fix up release tag
         run: |
           git tag -f dev
-          git push --tags
+          git push --tags -f
